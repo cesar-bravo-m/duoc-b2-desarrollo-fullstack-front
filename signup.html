@@ -195,7 +195,7 @@
             const birthdate = new Date(birthdateEl.value);
             const today = new Date();
             const age = today.getFullYear() - birthdate.getFullYear();
-            if (age >= 13) {
+            if (age >= 13 && age <= 100) {
                 document.getElementById('birthdate-checkmark').style.display = 'inline';
                 document.getElementById('birthdate-cross').style.display = 'none';
                 birthdateEl.style.borderColor = 'green';
@@ -239,6 +239,18 @@
             fields.forEach(field => {
                 document.getElementById(field).style.borderColor = '#ccc';
             });
+            document.getElementById('signupForm').querySelector('button[type="submit"]').disabled = true;
+
+            document.getElementById('birthdate-checkmark').style.display = 'none';
+            document.getElementById('birthdate-cross').style.display = 'inline';
+
+            document.getElementById('password-number-checkmark').style.display = 'none';
+            document.getElementById('password-number-cross').style.display = 'inline';
+            document.getElementById('password-uppercase-checkmark').style.display = 'none';
+            document.getElementById('password-uppercase-cross').style.display = 'inline';
+            document.getElementById('password-length-checkmark').style.display = 'none';
+            document.getElementById('password-length-cross').style.display = 'inline';
+
             document.getElementById('signupForm').reset();
         }
 
