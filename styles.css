@@ -652,3 +652,100 @@ body.fade-in {
         font-size: 0.9rem;
     }
 }
+
+main#signup-form {
+    padding: 20px;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+main#signup-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+main#signup-form form div {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+main#signup-form .checkmark {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    font-size: 1.2rem;
+    color: green;
+    display: none;
+}
+
+main#signup-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+main#signup-form input[type="text"],
+main#signup-form input[type="email"],
+main#signup-form input[type="date"],
+main#signup-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+main#signup-form button.cta-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+main#signup-form button.cta-button:hover {
+    background-color: var(--hover-color);
+}
+
+#password-number-checkmark, #password-uppercase-checkmark, #password-length-checkmark, #birthdate-checkmark {
+    font-size: 1.2rem;
+    color: green;
+}   
+
+#password-number-cross, #password-uppercase-cross, #password-length-cross, #birthdate-cross {
+    font-size: 1.2rem;
+    color: red;
+}   
+
+.clear-button {
+    border: 1px solid #000;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.clear-button:hover {
+    background-color: #090909;
+    color: #fff;
+}
+
+#signup-form button.cta-button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+#signup-form button.cta-button:disabled:hover {
+    background-color: #ccc;
+    color: #666;
+}
