@@ -4,3 +4,4 @@
 
 Changelog:
 - Agregué la página "Crear cuenta" con un formulario para crear usuarios
+- Agregué bootstrap
