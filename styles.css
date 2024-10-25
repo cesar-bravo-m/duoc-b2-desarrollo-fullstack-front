@@ -749,3 +749,11 @@ main#signup-form button.cta-button:hover {
     background-color: #ccc;
     color: #666;
 }
+
+#signup-button {
+    cursor: pointer !important;
+}
+
+.text-success {
+    display: none;
+}
