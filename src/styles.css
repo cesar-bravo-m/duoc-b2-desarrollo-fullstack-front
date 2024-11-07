@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+
+body.modal-open {
+  overflow: hidden;
+  padding-right: 17px; /* Compensate for scrollbar disappearance */
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+.modal {
+  z-index: 1045;
+}
+
+/* Ensure modals stack properly */
+app-cart-modal, app-product-details-modal {
+  z-index: 1050;
+}
+
+/* Fix for modal backdrop click issues */
+.modal-dialog {
+  position: relative;
+  z-index: 1046;
+}
+
+/* Prevent background interaction when modal is open */
+body.modal-open .container {
+  pointer-events: none;
+}
+
+body.modal-open .modal,
+body.modal-open .modal * {
+  pointer-events: auto;
+}

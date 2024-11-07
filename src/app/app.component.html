@@ -1,0 +1,88 @@
+<header class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-dragon me-2"></i>
+      La Bóveda del Dragón
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Tienda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Novedades</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Dados y Accesorios</a>
+        </li>
+      </ul>
+      <div class="d-flex">
+        <button class="btn btn-outline-light me-2" (click)="openCart()">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="ms-2">Carrito ({{cartItemCount}})</span>
+        </button>
+        <button class="btn btn-primary" (click)="openLogin()">
+          <i class="fas fa-user"></i>
+          <span class="ms-2">Iniciar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="container py-4">
+  <app-product-list></app-product-list>
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="bg-dark text-light py-4 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>La Bóveda del Dragón</h5>
+        <p>Tu tienda única para todo lo relacionado con juegos de mesa</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Enlaces Rápidos</h5>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-light">Sobre Nosotros</a></li>
+          <li><a href="#" class="text-light">Contacto</a></li>
+          <li><a href="#" class="text-light">Política de Envíos</a></li>
+          <li><a href="#" class="text-light">Devoluciones</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Síguenos</h5>
+        <div class="social-links">
+          <a href="#" class="text-light me-3"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-discord"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<app-cart-modal
+  [(isOpen)]="isCartOpen"
+  [class.show]="isCartOpen">
+</app-cart-modal>
+
+<app-login-modal
+  [(isOpen)]="isLoginOpen"
+  [class.show]="isLoginOpen"
+  (openRegisterModal)="openRegister()">
+</app-login-modal>
+
+<app-register-modal
+  [(isOpen)]="isRegisterOpen"
+  [class.show]="isRegisterOpen"
+  (openLoginModal)="openLogin()">
+</app-register-modal>
