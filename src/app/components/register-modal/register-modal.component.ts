@@ -1,58 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators, ReactiveFormsModule, ValidatorFn, ValidationErrors, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-register-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  template: `
-    <div class="modal fade show" [class.d-block]="isOpen" tabindex="-1" (click)="closeModal()">
-      <div class="modal-dialog" (click)="$event.stopPropagation()">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Registro</h5>
-            <button type="button" class="btn-close" (click)="closeModal()"></button>
-          </div>
-          <div class="modal-body">
-            <form (ngSubmit)="onSubmit()">
-              <div class="mb-3">
-                <label for="name" class="form-label">Nombre Completo</label>
-                <input type="text" class="form-control" id="name" [(ngModel)]="userData.name" name="name" required>
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="email" [(ngModel)]="userData.email" name="email" required>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" [(ngModel)]="userData.password" name="password" required>
-              </div>
-              <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="userData.confirmPassword" name="confirmPassword" required>
-              </div>
-              <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="terms" [(ngModel)]="userData.acceptTerms" name="terms" required>
-                <label class="form-check-label" for="terms">
-                  Acepto los términos y condiciones
-                </label>
-              </div>
-              <button type="submit" class="btn btn-primary w-100" [disabled]="!isFormValid()">
-                Registrarse
-              </button>
-            </form>
-            <div class="text-center mt-3">
-              <p class="mb-0">¿Ya tienes una cuenta? 
-                <a href="#" class="text-primary" (click)="openLogin($event)">Inicia sesión aquí</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-backdrop fade show" *ngIf="isOpen"></div>
-  `,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: './register-modal.component.html',
   styles: [`
     :host {
       position: fixed;
@@ -76,13 +30,88 @@ export class RegisterModalComponent {
   @Output() isOpenChange = new EventEmitter<boolean>();
   @Output() openLoginModal = new EventEmitter<void>();
 
-  userData = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    acceptTerms: false
-  };
+  userData!: FormGroup;
+
+  constructor(private fb : FormBuilder) {}
+
+  ngOnInit(): void {
+    this.userData = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, this.emailValidator()]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(18), this.passwordNotValidValidator()]],
+      confirmPassword: ['', [Validators.required]],
+      acceptTerms: [false, Validators.requiredTrue],
+      address: [''],
+      birthday: ['', [Validators.required, this.ageValidator()]]
+    }, { validators: this.passwordMatchValidator() });
+  }
+
+  emailValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return Validators.email(control) ?? null;
+    };
+  }
+
+  passwordMatchValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const password = control.get('password')?.value;
+      const confirmPassword = control.get('confirmPassword')?.value;
+      const res = password === confirmPassword ? null : { passwordMismatch: true };
+      control.get('confirmPassword')?.setErrors(res);
+      return res;
+    };
+  }
+
+  passwordNotValidValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const password = control.value;
+      const containsNumber = /[0-9]/.test(password);
+      const containsCapitalLetter = /[A-Z]/.test(password);
+      return containsNumber && containsCapitalLetter ? null : { passwordNotValid: true };
+    };
+  }
+
+  ageValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const birthday = new Date(control.value);
+      const today = new Date();
+      if (!birthday) return null;
+      const age = today.getFullYear() - birthday.getFullYear();
+      return age > 13 ? null : { ageNotValid: true };
+    };
+  }
+
+  get name() {
+    return this.userData.get('name')!;
+  }
+
+  get email() {
+    return this.userData.get('email')!;
+  }
+
+  get password() {
+    return this.userData.get('password')!;
+  }
+
+  get confirmPassword() {
+    return this.userData.get('confirmPassword')!;
+  }
+
+  get acceptTerms() {
+    return this.userData.get('acceptTerms')!;
+  }
+  
+  get address() {
+    return this.userData.get('address')!;
+  }
+
+  get birthday() {
+    return this.userData.get('birthday')!;
+  }
+
+  isFormValid(): boolean {
+    return this.userData.valid;
+  }
 
   closeModal() {
     this.isOpen = false;
@@ -96,21 +125,16 @@ export class RegisterModalComponent {
     this.openLoginModal.emit();
   }
 
-  isFormValid(): boolean {
-    return (
-      this.userData.name.length > 0 &&
-      this.userData.email.length > 0 &&
-      this.userData.password.length > 0 &&
-      this.userData.password === this.userData.confirmPassword &&
-      this.userData.acceptTerms
-    );
+  canSubmit(): boolean {
+    return this.userData.valid && this.acceptTerms.value;
   }
 
   onSubmit() {
-    if (this.isFormValid()) {
-      console.log('Register attempt with:', this.userData);
-      // Implement registration logic here
-      this.closeModal();
-    }
+    window.alert('Registro exitoso');
+    this.closeModal();
+  }
+
+  clearForm() {
+    this.userData.reset();
   }
 } 

@@ -1,0 +1,79 @@
+<div class="modal fade show" [class.d-block]="isOpen" tabindex="-1" (click)="closeModal()">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Registro</h5>
+                <button type="button" class="btn-close" (click)="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="userData" (ngSubmit)="onSubmit()">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre Completo</label>
+                        <input type="text" class="form-control" id="name" formControlName="name" required>
+                        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+                            <div *ngIf="name.errors?.['required']">El nombre es requerido</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" formControlName="email" required>
+                        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+                            <div *ngIf="email.errors?.['required']">El correo electrónico es requerido</div>
+                            <div *ngIf="email.errors?.['email']">El correo electrónico no es válido</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthday" class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="birthday" formControlName="birthday" required>
+                        <div *ngIf="birthday.invalid && (birthday.dirty || birthday.touched)" class="alert alert-danger">
+                            <div *ngIf="birthday.errors?.['ageNotValid']">Debes ser mayor de 13 años</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="address" formControlName="address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" formControlName="password" required>
+                        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+                            <div *ngIf="password.errors?.['required']">La contraseña es requerida</div>
+                            <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
+                            <div *ngIf="password.errors?.['maxlength']">La contraseña debe tener máximo 18 caracteres</div>
+                            <div *ngIf="password.errors?.['passwordNotValid']">La contraseña debe contener al menos un número y una letra mayúscula</div>
+                            <div *ngIf="password.errors?.['passwordMismatch']">Las contraseñas no coinciden</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword" required>
+                        <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="alert alert-danger">
+                            <div *ngIf="userData.errors?.['passwordMismatch']">Las contraseñas no coinciden</div>
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" formControlName="acceptTerms"
+                            required>
+                        <label class="form-check-label" for="terms">
+                            Acepto los términos y condiciones
+                        </label>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-secondary w-100" (click)="clearForm()">
+                            Limpiar
+                        </button>
+                        <button type="submit" class="btn btn-primary w-100" [disabled]="userData.invalid">
+                            Registrarse
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p class="mb-0">¿Ya tienes una cuenta?
+                        <a href="#" class="text-primary" (click)="openLogin($event)">Inicia sesión aquí</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop fade show" *ngIf="isOpen"></div>

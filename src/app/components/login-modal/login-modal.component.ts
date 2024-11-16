@@ -18,11 +18,11 @@ import { FormsModule } from '@angular/forms';
             <form (ngSubmit)="onSubmit()">
               <div class="mb-3">
                 <label for="email" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="email" [(ngModel)]="email" name="email" required>
+                <input type="email" class="form-control" id="login-email" [(ngModel)]="email" name="email" required>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="password" [(ngModel)]="password" name="password" required>
+                <input type="password" class="form-control" id="login-password" [(ngModel)]="password" name="password" required>
               </div>
               <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="remember" [(ngModel)]="rememberMe" name="remember">
